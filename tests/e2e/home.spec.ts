@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test'
 test('landing page explains the purpose and limitations', async ({ page }) => {
   await page.goto('/')
   await expect(page.getByRole('heading', { name: /Conheça melhor/i })).toBeVisible()
-  await expect(page.getByText(/não calcula graduação/i)).toBeVisible()
+  await expect(page.getByText(/não mede graduação/i)).toBeVisible()
 })
 
 test('user can prepare the device and begin the guided exercises', async ({ page }) => {
@@ -40,7 +40,7 @@ test('user completes symbol, directional-pattern and symptom steps and sees deta
   await expect(page.getByRole('heading', { name: /1\. Reconhecimento de símbolos/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /2\. Observação de padrões direcionais/i })).toBeVisible()
   await expect(page.getByRole('heading', { name: /3\. Sintomas visuais referidos/i })).toBeVisible()
-  await expect(page.getByText(/não permite estimar miopia ou graduação/i)).toBeVisible()
+  await expect(page.getByText(/não permitem estimar miopia ou graduação/i)).toBeVisible()
   await expect(page.getByText(/não fornece valores SPH, CYL ou AXIS/i)).toBeVisible()
   await expect(page.getByRole('button', { name: /Imprimir relatório/i })).toBeVisible()
 })
