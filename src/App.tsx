@@ -7,7 +7,7 @@ import {
 type Screen = 'home' | 'intro' | 'calibration' | 'acuity' | 'astigmatism' | 'symptoms' | 'results'
 type EyeSide = 'right' | 'left'
 type Direction = 'right' | 'down' | 'left' | 'up'
-type Answer = { eye: EyeSide; level: number; correct: boolean }
+type Answer = { eye: EyeSide; level: number; correct: boolean; skipped: boolean }
 type PatternAnswer = { eye: EyeSide; angle: number; perception: 'similar' | 'different' | 'unsure' }
 type SymptomChoice = 'clear' | 'sometimes' | 'blurred'
 type Symptoms = {
@@ -21,7 +21,7 @@ type Symptoms = {
 const eyeNames: Record<EyeSide, string> = { right: 'Olho direito', left: 'Olho esquerdo' }
 const directions: Direction[] = ['right', 'down', 'left', 'up']
 const directionLabels: Record<Direction, string> = { right: 'Direita', down: 'Baixo', left: 'Esquerda', up: 'Cima' }
-const levels = [1, 0.8, 0.6, 0.4, 0.2, 0]
+const levels = [1, 0.8, 0.6, 0.4, 0.2, 0]\nconst repetitionsPerLevel = 5
 const arrowSymbols: Record<Direction, string> = { right: '→', down: '↓', left: '←', up: '↑' }
 const patternAngles = [0, 45, 90, 135]
 const initialSymptoms: Symptoms = {
@@ -30,10 +30,11 @@ const initialSymptoms: Symptoms = {
 }
 
 function makeQuestions(): { direction: Direction; level: number }[] {
-  return levels.map((level) => ({
+  const questions = levels.flatMap((level) => Array.from({ length: repetitionsPerLevel }, () => ({
     level,
     direction: directions[Math.floor(Math.random() * directions.length)],
-  }))
+  })))
+  return questions.sort(() => Math.random() - 0.5)
 }
 
 function App() {
@@ -60,8 +61,13 @@ function App() {
       correct: eyeAnswers.filter((answer) => answer.correct).length,
       total: eyeAnswers.length,
       levelBreakdown: levels.map((level) => {
-        const response = eyeAnswers.find((answer) => answer.level === level)
-        return { level, answered: Boolean(response), correct: response?.correct ?? false }
+        const levelAnswers = eyeAnswers.filter((answer) => answer.level === level)
+        return {
+          level,
+          total: levelAnswers.length,
+          correct: levelAnswers.filter((answer) => answer.correct).length,
+          skipped: levelAnswers.filter((answer) => answer.skipped).length,
+        }
       }),
     }
   }), [answers])
@@ -119,6 +125,7 @@ function App() {
       eye: currentEye,
       level: currentQuestion.level,
       correct: direction === currentQuestion.direction,
+      skipped: false,
     }]
     setAnswers(nextAnswers)
     if (questionIndex < questions.length - 1) {
@@ -136,7 +143,7 @@ function App() {
 
   function skipAcuity() {
     if (!currentQuestion) return
-    const nextAnswers = [...answers, { eye: currentEye, level: currentQuestion.level, correct: false }]
+    const nextAnswers = [...answers, { eye: currentEye, level: currentQuestion.level, correct: false, skipped: true }]
     setAnswers(nextAnswers)
     if (questionIndex < questions.length - 1) setQuestionIndex(questionIndex + 1)
     else if (eyeIndex === 0) {
@@ -360,16 +367,16 @@ function App() {
               <article className="result-card" key={item.eye}>
                 <span className="result-label">{eyeNames[item.eye]}</span>
                 <strong>{item.correct} <small>{item.correct === 1 ? 'acerto' : 'acertos'}</small></strong>
-                <span className="result-description">em {item.total} símbolos apresentados. Respostas por dimensão relativa do estímulo:</span>
+                <span className="result-description">em {item.total} símbolos apresentados, distribuídos por 6 dimensões com 5 tentativas cada. Acertos por dimensão:</span>
                 <div className="level-breakdown">
                   {item.levelBreakdown.map((level) => (
-                    <span key={level.level}><b>{Math.round(level.level * 100)}%</b><i className={level.answered && level.correct ? 'level-mark correct' : 'level-mark'} />{level.answered && level.correct ? 'Identificado' : 'Não identificado'}</span>
+                    <span key={level.level}><b>{Math.round(level.level * 100)}%</b><i className={level.correct >= 4 ? 'level-mark correct' : 'level-mark'} />{level.correct}/{level.total} corretos{level.skipped ? ` · ${level.skipped} sem resposta` : ''}</span>
                   ))}
                 </div>
               </article>
             ))}
           </div>
-          <p className="report-explainer">Estes valores descrevem apenas o desempenho neste exercício específico. Não são uma escala Snellen/logMAR e não permitem estimar miopia ou graduação.</p>
+          <p className="report-explainer">Cada dimensão é apresentada com cinco tentativas para reduzir o efeito do acaso. Um resultado de 4/5 ou 5/5 é assinalado apenas como desempenho consistente neste exercício. Estes valores não são uma escala Snellen/logMAR, não medem acuidade visual clínica e não permitem estimar miopia ou graduação.</p>
 
           <h2 className="section-heading">2. Observação de padrões direcionais</h2>
           <div className="result-observations">
