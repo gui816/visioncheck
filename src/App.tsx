@@ -272,7 +272,7 @@ function App() {
           <ul className="check-list">
             <li><CheckCircle2 /> Escolha um local bem iluminado, sem reflexos no ecrã.</li>
             <li><CheckCircle2 /> Limpe o ecrã e mantenha o dispositivo à altura dos olhos.</li>
-            <li><CheckCircle2 /> Prepare um cartão bancário ou cartão de dimensão padrão para calibrar o ecrã.</li>
+            <li><CheckCircle2 /> Prepare um cartão bancário ou cartão de dimensão padrão para calibrar o ecrã e, se possível, uma régua ou fita métrica para confirmar a distância de observação.</li>
             <li><CheckCircle2 /> Se utiliza óculos habitualmente, faça o teste com a correção que usa no dia a dia.</li>
           </ul>
           <div className="notice"><ShieldCheck size={19} /><p>Se tiver perda súbita de visão, dor ocular intensa, flashes novos ou uma sombra semelhante a uma cortina, não faça o teste: procure assistência médica urgente.</p></div>
@@ -293,7 +293,7 @@ function App() {
             <span className="scale-caption">Ajuste a largura até corresponder ao seu cartão</span>
           </div>
           <label className="range-label" htmlFor="scale">Largura no ecrã <strong>{cardWidth} px</strong></label>
-          <input id="scale" className="range-input" type="range" min="220" max="440" value={cardWidth} onChange={(event) => setCardWidth(Number(event.target.value))} />
+          <input id="scale" className="range-input" type="range" min="220" max="440" value={cardWidth} onChange={(event) => { setCardWidth(Number(event.target.value)); setCalibrated(false) }} />
           <div className="calibration-actions">
             <button className={calibrated ? 'choice-button selected' : 'choice-button'} onClick={() => setCalibrated(true)}><CheckCircle2 size={17} /> Calibrei com um cartão</button>
             <button className={!calibrated ? 'choice-button selected' : 'choice-button'} onClick={() => setCalibrated(false)}>Continuar sem cartão</button>
