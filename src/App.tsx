@@ -313,11 +313,19 @@ function App() {
             </div>
           </div>
           <div className="symptom-block">
-            <h2>Visão ao perto — ambos os olhos, individualmente</h2>
+            <h2>Visão ao perto — olho direito</h2>
             <div className="symptom-options">
-              <button className={symptoms.nearRight === 'clear' && symptoms.nearLeft === 'clear' ? 'choice-button selected' : 'choice-button'} onClick={() => { updateSymptom('nearRight', 'clear'); updateSymptom('nearLeft', 'clear') }}>Nítida</button>
-              <button className={symptoms.nearRight === 'sometimes' || symptoms.nearLeft === 'sometimes' ? 'choice-button selected' : 'choice-button'} onClick={() => { updateSymptom('nearRight', 'sometimes'); updateSymptom('nearLeft', 'sometimes') }}>Por vezes desfocada</button>
-              <button className={symptoms.nearRight === 'blurred' || symptoms.nearLeft === 'blurred' ? 'choice-button selected' : 'choice-button'} onClick={() => { updateSymptom('nearRight', 'blurred'); updateSymptom('nearLeft', 'blurred') }}>Frequentemente desfocada</button>
+              <button className={symptoms.nearRight === 'clear' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearRight', 'clear')}>Nítida</button>
+              <button className={symptoms.nearRight === 'sometimes' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearRight', 'sometimes')}>Por vezes desfocada</button>
+              <button className={symptoms.nearRight === 'blurred' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearRight', 'blurred')}>Frequentemente desfocada</button>
+            </div>
+          </div>
+          <div className="symptom-block">
+            <h2>Visão ao perto — olho esquerdo</h2>
+            <div className="symptom-options">
+              <button className={symptoms.nearLeft === 'clear' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearLeft', 'clear')}>Nítida</button>
+              <button className={symptoms.nearLeft === 'sometimes' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearLeft', 'sometimes')}>Por vezes desfocada</button>
+              <button className={symptoms.nearLeft === 'blurred' ? 'choice-button selected' : 'choice-button'} onClick={() => updateSymptom('nearLeft', 'blurred')}>Frequentemente desfocada</button>
             </div>
           </div>
           <div className="symptom-block">
