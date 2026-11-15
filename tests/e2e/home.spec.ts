@@ -43,9 +43,9 @@ test('user completes symbol, directional-pattern and symptom steps and sees deta
   await page.getByRole('button', { name: /Ver relatório detalhado/i }).click()
 
   await expect(page.getByRole('heading', { name: /O seu relatório está pronto/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /1\\. Reconhecimento de símbolos/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /2\\. Observação de padrões direcionais/i })).toBeVisible()
-  await expect(page.getByRole('heading', { name: /3\\. Sintomas visuais referidos/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /1\. Reconhecimento de símbolos/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /2\. Observação de padrões direcionais/i })).toBeVisible()
+  await expect(page.getByRole('heading', { name: /3\. Sintomas visuais referidos/i })).toBeVisible()
   await expect(page.getByText(/não permitem estimar miopia ou graduação/i)).toBeVisible()
   await expect(page.getByText(/não fornece valores SPH, CYL ou AXIS/i)).toBeVisible()
   await expect(page.getByRole('button', { name: /Imprimir relatório/i })).toBeVisible()
