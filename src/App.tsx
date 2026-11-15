@@ -35,7 +35,11 @@ function makeQuestions(): { direction: Direction; level: number }[] {
     level,
     direction: directions[Math.floor(Math.random() * directions.length)],
   })))
-  return questions.sort(() => Math.random() - 0.5)
+  for (let index = questions.length - 1; index > 0; index -= 1) {
+    const swapIndex = Math.floor(Math.random() * (index + 1))
+    ;[questions[index], questions[swapIndex]] = [questions[swapIndex], questions[index]]
+  }
+  return questions
 }
 
 function App() {
@@ -202,7 +206,7 @@ function App() {
           <p className="hero-copy">Uma experiência guiada, olho a olho, que reúne exercícios de reconhecimento de símbolos, observação de padrões e sintomas visuais para gerar um relatório educativo mais detalhado.</p>
           <div className="hero-actions">
             <button className="primary-button" onClick={() => setScreen('intro')}>Começar avaliação <ArrowRight size={18} /></button>
-            <span className="duration">Experiência guiada · cerca de 8–10 min</span>
+            <span className="duration">Experiência guiada · cerca de 10–12 min</span>
           </div>
           <div className="feature-grid">
             <article className="feature-card"><span className="feature-icon"><Eye /></span><h2>Resultados por olho</h2><p>Respostas e observações separadas para o olho direito e esquerdo.</p></article>
@@ -276,7 +280,7 @@ function App() {
               </button>
             ))}
           </div>
-          <p className="muted-hint">Este exercício regista respostas a símbolos num ecrã calibrado. Não equivale a um teste normalizado de acuidade visual.</p>
+          <p className="muted-hint">Cada dimensão é apresentada cinco vezes, em ordem aleatória. Responda apenas quando conseguir identificar a orientação; pode assinalar que não consegue ver. Não equivale a um teste normalizado de acuidade visual.</p>
           <button className="text-button" onClick={skipAcuity}>Não consigo ver o símbolo</button>
         </section>
       )}
