@@ -222,12 +222,13 @@ function App() {
           <div className="eyebrow"><CheckCircle2 size={15} /> EXERCÍCIOS CONCLUÍDOS</div>
           <h1>A sua sessão está concluída.</h1>
           <p className="panel-copy">Este resumo descreve apenas as respostas dadas nesta sessão. Não representa uma medição clínica da visão.</p>
+          <div className="score-disclaimer"><ShieldCheck size={17} /><span>A contagem de acertos não equivale a uma escala clínica como 6/6, não mede a acuidade visual e não permite determinar uma graduação.</span></div>
           <div className="result-grid">
             {summary.map((item) => (
               <article className="result-card" key={item.eye}>
                 <span className="result-label">{eyeNames[item.eye]}</span>
-                <strong>{item.correct} <small>/ {item.total}</small></strong>
-                <span className="result-description">respostas coincidentes com a orientação apresentada</span>
+                <strong>{item.correct} <small>{item.correct === 1 ? 'acerto' : 'acertos'}</small></strong>
+                <span className="result-description">em {item.total} símbolos apresentados neste exercício</span>
               </article>
             ))}
           </div>
