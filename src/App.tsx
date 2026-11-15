@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import {
   Activity, ArrowLeft, ArrowRight, Check, CheckCircle2, Eye, EyeOff,
   RotateCcw, ShieldCheck, Smartphone, Sun, Target, Printer, Info
@@ -46,6 +46,13 @@ function App() {
   const [screen, setScreen] = useState<Screen>('home')
   const [cardWidth, setCardWidth] = useState(320)
   const [calibrated, setCalibrated] = useState(false)
+  const [distanceConfirmed, setDistanceConfirmed] = useState(false)
+  const [brightnessConfirmed, setBrightnessConfirmed] = useState(false)
+  const [cameraEnabled, setCameraEnabled] = useState(false)
+  const [cameraError, setCameraError] = useState('')
+  const [positionConfirmed, setPositionConfirmed] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const cameraStreamRef = useRef<MediaStream | null>(null)
   const [eyeIndex, setEyeIndex] = useState(0)
   const [questionIndex, setQuestionIndex] = useState(0)
   const [patternIndex, setPatternIndex] = useState(0)
@@ -94,7 +101,46 @@ function App() {
     blurred: 'Frequentemente desfocada',
   }
 
+  useEffect(() => {
+    if (cameraEnabled && videoRef.current && cameraStreamRef.current) {
+      videoRef.current.srcObject = cameraStreamRef.current
+    }
+  }, [cameraEnabled])
+
+  useEffect(() => () => {
+    cameraStreamRef.current?.getTracks().forEach((track) => track.stop())
+  }, [])
+
+  async function enableCamera() {
+    setCameraError('')
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setCameraError('Este navegador não disponibiliza acesso à câmara. Pode continuar sem esta ajuda.')
+      return
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: 'user', width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: false,
+      })
+      cameraStreamRef.current = stream
+      setCameraEnabled(true)
+      setPositionConfirmed(false)
+    } catch {
+      setCameraError('Não foi possível aceder à câmara. Verifique a permissão do navegador ou continue sem esta ajuda.')
+    }
+  }
+
+  function disableCamera() {
+    cameraStreamRef.current?.getTracks().forEach((track) => track.stop())
+    cameraStreamRef.current = null
+    setCameraEnabled(false)
+    setPositionConfirmed(false)
+  }
+
   function startOver() {
+    disableCamera()
+    setDistanceConfirmed(false)
+    setBrightnessConfirmed(false)
     setScreen('home')
     setEyeIndex(0)
     setQuestionIndex(0)
@@ -253,7 +299,33 @@ function App() {
             <button className={!calibrated ? 'choice-button selected' : 'choice-button'} onClick={() => setCalibrated(false)}>Continuar sem cartão</button>
           </div>
           {!calibrated && <p className="inline-warning">Sem calibração física, o tamanho dos símbolos é apenas aproximado e os resultados não devem ser comparados.</p>}
-          <div className="distance-note"><Sun size={18} /><span>Durante os exercícios, mantenha o ecrã a aproximadamente 40 cm dos olhos. Esta experiência não mede a visão ao longe nem calcula graduação.</span></div>
+          <div className="setup-checks">
+            <h2>Confirme as condições de utilização</h2>
+            <button className={distanceConfirmed ? 'choice-button selected' : 'choice-button'} onClick={() => setDistanceConfirmed((value) => !value)}>
+              <CheckCircle2 size={17} /> {distanceConfirmed ? 'Distância de 40 cm confirmada' : 'Medi 40 cm com uma régua ou fita métrica'}
+            </button>
+            <button className={brightnessConfirmed ? 'choice-button selected' : 'choice-button'} onClick={() => setBrightnessConfirmed((value) => !value)}>
+              <Sun size={17} /> {brightnessConfirmed ? 'Brilho máximo confirmado' : 'Ajustei o brilho do ecrã para o máximo'}
+            </button>
+          </div>
+          <div className="camera-assist">
+            <div className="camera-assist-heading"><Eye size={18} /><div><strong>Ajuda opcional de posicionamento</strong><span>Use a câmara frontal como espelho para centrar o rosto e manter os olhos à altura do ecrã.</span></div></div>
+            {!cameraEnabled ? (
+              <button className="choice-button" onClick={enableCamera}><Smartphone size={17} /> Ativar pré-visualização da câmara</button>
+            ) : (
+              <div className="camera-preview-wrap">
+                <video ref={videoRef} className="camera-preview" autoPlay playsInline muted aria-label="Pré-visualização local da câmara frontal" />
+                <div className="camera-guide" aria-hidden="true"><span /></div>
+                <button className={positionConfirmed ? 'choice-button selected' : 'choice-button'} onClick={() => setPositionConfirmed((value) => !value)}>
+                  <CheckCircle2 size={17} /> {positionConfirmed ? 'Posição confirmada' : 'O rosto está centrado e os olhos à altura do ecrã'}
+                </button>
+                <button className="text-button" onClick={disableCamera}>Desligar câmara</button>
+              </div>
+            )}
+            {cameraError && <p className="inline-warning" role="status">{cameraError}</p>}
+            <p className="camera-privacy">A imagem é apresentada apenas neste dispositivo. Não é gravada nem enviada. A pré-visualização não deteta o rosto nem mede a distância.</p>
+          </div>
+          <div className="distance-note"><Sun size={18} /><span>Meça aproximadamente 40 cm entre os olhos e o ecrã. Mantenha o dispositivo à altura dos olhos, evite reflexos e não altere o zoom do navegador. Esta experiência não mede a visão ao longe nem calcula graduação.</span></div>
           <button className="primary-button" onClick={beginAcuity}>Iniciar exercícios <ArrowRight size={18} /></button>
         </section>
       )}
@@ -363,8 +435,10 @@ function App() {
           <p className="panel-copy">Resumo das respostas e perceções registadas nesta sessão. Não representa um diagnóstico nem uma medição clínica.</p>
           <div className="report-meta">
             <span>Data: {new Date().toLocaleDateString('pt-PT')}</span>
-            <span>Calibração: {calibrated ? 'cartão de 85,6 mm indicado pelo utilizador' : 'não realizada'}</span>
-            <span>Distância de observação indicada: aproximadamente 40 cm</span>
+            <span>Calibração do ecrã: {calibrated ? 'ajustada manualmente com cartão de 85,6 mm' : 'não realizada'}</span>
+            <span>Distância de observação: {distanceConfirmed ? '40 cm confirmados pelo utilizador com régua ou fita métrica' : 'não confirmada por medição'}</span>
+            <span>Brilho do ecrã: {brightnessConfirmed ? 'ajustado para o máximo pelo utilizador' : 'não confirmado'}</span>
+            <span>Ajuda de posicionamento por câmara: {cameraEnabled && positionConfirmed ? 'utilizada; posição confirmada visualmente pelo utilizador' : 'não utilizada ou não confirmada'}</span>
           </div>
           <h2 className="section-heading">1. Reconhecimento de símbolos</h2>
           <div className="result-grid">
