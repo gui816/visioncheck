@@ -3,7 +3,7 @@
 Aplicação web de auto-observação visual educativa, com exercícios guiados por olho e relatório detalhado da sessão.
 
 ## Funcionalidades atuais
-- Calibração manual opcional com cartão de 85,6 mm.
+- Calibração manual opcional com cartão bancário de 85,6 × 53,98 mm, usando o lado curto como referência para caber melhor em ecrãs móveis.
 - Lista de verificação para distância de observação de 40 cm e brilho do ecrã.
 - Pré-visualização opcional da câmara frontal para ajudar o utilizador a centrar o rosto e alinhar os olhos; não executa reconhecimento facial nem mede distância.
 - O relatório regista quais as condições de preparação confirmadas pelo utilizador.
