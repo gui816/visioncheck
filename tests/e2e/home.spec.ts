@@ -23,7 +23,7 @@ test('user completes symbol, directional-pattern and symptom steps and sees deta
   await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
   await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
 
-  for (let answer = 0; answer < 12; answer += 1) {
+  for (let answer = 0; answer < 60; answer += 1) {
     await page.getByRole('button', { name: 'Direita' }).click()
   }
 
@@ -50,7 +50,7 @@ test('symptom answers are reflected in the educational interpretation', async ({
   await page.getByRole('button', { name: /Começar avaliação/i }).click()
   await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
   await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
-  for (let answer = 0; answer < 12; answer += 1) await page.getByRole('button', { name: 'Direita' }).click()
+  for (let answer = 0; answer < 60; answer += 1) await page.getByRole('button', { name: 'Direita' }).click()
   for (let pattern = 0; pattern < 8; pattern += 1) await page.getByRole('button', { name: /Sim, parecem semelhantes/i }).click()
   await page.getByRole('button', { name: /Frequentemente desfocada/i }).first().click()
   await page.getByRole('button', { name: /Ver relatório detalhado/i }).click()
