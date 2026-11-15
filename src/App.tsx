@@ -65,7 +65,7 @@ function App() {
   const eyes: EyeSide[] = ['right', 'left']
   const currentEye = eyes[eyeIndex]
   const currentQuestion = questions[questionIndex]
-  const pixelsPerMillimetre = cardWidth / 85.6
+  const pixelsPerMillimetre = cardWidth / 53.98
 
   const summary = useMemo(() => eyes.map((eye) => {
     const eyeAnswers = answers.filter((answer) => answer.eye === eye)
@@ -289,15 +289,15 @@ function App() {
           <button className="back-link" onClick={() => { disableCamera(); setScreen('intro') }}><ArrowLeft size={15} /> Voltar</button>
           <div className="eyebrow"><Smartphone size={15} /> PASSO 1 · CALIBRAÇÃO</div>
           <h1>Ajuste a escala do ecrã.</h1>
-          <p className="panel-copy">Coloque um cartão bancário real sobre o retângulo. Ajuste o controlo até a largura do retângulo coincidir com a largura do cartão (85,6 mm).</p>
+          <p className="panel-copy">Coloque um cartão bancário real na vertical sobre o retângulo. Ajuste o controlo até a largura do retângulo coincidir com o lado curto do cartão (53,98 mm).</p>
           <div className="calibration-stage">
             <div className="calibration-card" style={{ width: `${cardWidth}px` }}>
-              <span>CARTÃO</span><small>85,6 mm · referência</small>
+              <span>CARTÃO</span><small>53,98 mm · lado curto</small>
             </div>
             <span className="scale-caption">Ajuste a largura até corresponder ao seu cartão</span>
           </div>
-          <label className="range-label" htmlFor="scale">Largura no ecrã <strong>{cardWidth} px</strong></label>
-          <input id="scale" className="range-input" type="range" min="220" max="440" value={cardWidth} onChange={(event) => { setCardWidth(Number(event.target.value)); setCalibrated(false) }} />
+          <label className="range-label" htmlFor="scale">Lado curto no ecrã <strong>{cardWidth} px</strong></label>
+          <input id="scale" className="range-input" type="range" min="160" max="360" value={cardWidth} onChange={(event) => { setCardWidth(Number(event.target.value)); setCalibrated(false) }} />
           <div className="calibration-actions">
             <button className={calibrated ? 'choice-button selected' : 'choice-button'} onClick={() => setCalibrated(true)}><CheckCircle2 size={17} /> Calibrei com um cartão</button>
             <button className={!calibrated ? 'choice-button selected' : 'choice-button'} onClick={() => setCalibrated(false)}>Continuar sem cartão</button>
