@@ -342,11 +342,17 @@ function App() {
           </div>
           <div className="progress-track"><span style={{ width: `${progress}%` }} /></div>
           <h1>{eyeNames[currentEye]}</h1>
-          <p className="panel-copy">Tape o outro olho com a mão ou um cartão, sem pressionar. Indique para que lado apontam os traços do símbolo.</p>
+          <p className="panel-copy">Tape o outro olho com a mão ou um cartão, sem pressionar. Indique para que lado apontam os traços do E. O símbolo é desenhado numa grelha vetorial de 5 × 5, mantendo a proporção geométrica enquanto varia de tamanho.</p>
           <div className="eye-reminder"><EyeOff size={17} /> {currentEye === 'right' ? 'Mantenha o olho esquerdo tapado.' : 'Mantenha o olho direito tapado.'}</div>
           {notice && <p className="session-note">{notice}</p>}
           <div className="optotype-stage" aria-label="Símbolo E em orientação aleatória">
-            <span className="optotype" style={{ fontSize: `${(2.91 * Math.pow(10, currentQuestion.level) * pixelsPerMillimetre)}px`, transform: `rotate(${directions.indexOf(currentQuestion.direction) * 90}deg)` }}>E</span>
+            <svg className="optotype tumbling-e" viewBox="0 0 5 5" role="img" aria-label="Símbolo E em orientação aleatória"
+              style={{ width: `${(2.91 * Math.pow(10, currentQuestion.level) * pixelsPerMillimetre)}px`, height: `${(2.91 * Math.pow(10, currentQuestion.level) * pixelsPerMillimetre)}px`, transform: `rotate(${directions.indexOf(currentQuestion.direction) * 90}deg)` }}>
+              <rect x="0" y="0" width="1" height="5" />
+              <rect x="0" y="0" width="5" height="1" />
+              <rect x="0" y="2" width="4" height="1" />
+              <rect x="0" y="4" width="5" height="1" />
+            </svg>
           </div>
           <p className="question-prompt">Para que lado apontam os traços?</p>
           <div className="direction-grid">
@@ -356,7 +362,7 @@ function App() {
               </button>
             ))}
           </div>
-          <p className="muted-hint">Cada dimensão é apresentada cinco vezes, em ordem aleatória. Responda apenas quando conseguir identificar a orientação; pode assinalar que não consegue ver. Não equivale a um teste normalizado de acuidade visual.</p>
+          <p className="muted-hint">Cada dimensão da escala é apresentada cinco vezes, em ordem aleatória. O tamanho progride em passos de 0,2 numa escala logarítmica de estímulo (logMAR-like), mas este exercício não é um teste normalizado nem produz uma medida clínica de acuidade visual.</p>
           <button className="text-button" onClick={skipAcuity}>Não consigo ver o símbolo</button>
         </section>
       )}
