@@ -345,7 +345,7 @@ function App() {
           <p className="panel-copy">Tape o outro olho com a mão ou um cartão, sem pressionar. Indique para que lado apontam os traços do E. O símbolo é desenhado numa grelha vetorial de 5 × 5, mantendo a proporção geométrica enquanto varia de tamanho.</p>
           <div className="eye-reminder"><EyeOff size={17} /> {currentEye === 'right' ? 'Mantenha o olho esquerdo tapado.' : 'Mantenha o olho direito tapado.'}</div>
           {notice && <p className="session-note">{notice}</p>}
-          <div className="optotype-stage" aria-label="Símbolo E em orientação aleatória">
+          <div className="optotype-stage">
             <svg className="optotype tumbling-e" viewBox="0 0 5 5" role="img" aria-label="Símbolo E em orientação aleatória"
               style={{ width: `${(2.91 * Math.pow(10, currentQuestion.level) * pixelsPerMillimetre)}px`, height: `${(2.91 * Math.pow(10, currentQuestion.level) * pixelsPerMillimetre)}px`, transform: `rotate(${directions.indexOf(currentQuestion.direction) * 90}deg)` }}>
               <rect x="0" y="0" width="1" height="5" />
