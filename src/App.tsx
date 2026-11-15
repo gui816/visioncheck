@@ -49,6 +49,7 @@ function App() {
   const [distanceConfirmed, setDistanceConfirmed] = useState(false)
   const [brightnessConfirmed, setBrightnessConfirmed] = useState(false)
   const [cameraEnabled, setCameraEnabled] = useState(false)
+  const [cameraUsed, setCameraUsed] = useState(false)
   const [cameraError, setCameraError] = useState('')
   const [positionConfirmed, setPositionConfirmed] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -123,6 +124,7 @@ function App() {
         audio: false,
       })
       cameraStreamRef.current = stream
+      setCameraUsed(true)
       setCameraEnabled(true)
       setPositionConfirmed(false)
     } catch {
@@ -134,13 +136,14 @@ function App() {
     cameraStreamRef.current?.getTracks().forEach((track) => track.stop())
     cameraStreamRef.current = null
     setCameraEnabled(false)
-    setPositionConfirmed(false)
   }
 
   function startOver() {
     disableCamera()
     setDistanceConfirmed(false)
     setBrightnessConfirmed(false)
+    setCameraUsed(false)
+    setPositionConfirmed(false)
     setScreen('home')
     setEyeIndex(0)
     setQuestionIndex(0)
@@ -153,6 +156,7 @@ function App() {
   }
 
   function beginAcuity() {
+    disableCamera()
     setEyeIndex(0)
     setQuestionIndex(0)
     setPatternIndex(0)
@@ -438,7 +442,7 @@ function App() {
             <span>Calibração do ecrã: {calibrated ? 'ajustada manualmente com cartão de 85,6 mm' : 'não realizada'}</span>
             <span>Distância de observação: {distanceConfirmed ? '40 cm confirmados pelo utilizador com régua ou fita métrica' : 'não confirmada por medição'}</span>
             <span>Brilho do ecrã: {brightnessConfirmed ? 'ajustado para o máximo pelo utilizador' : 'não confirmado'}</span>
-            <span>Ajuda de posicionamento por câmara: {cameraEnabled && positionConfirmed ? 'utilizada; posição confirmada visualmente pelo utilizador' : 'não utilizada ou não confirmada'}</span>
+            <span>Ajuda de posicionamento por câmara: {cameraUsed ? (positionConfirmed ? 'pré-visualização utilizada; posição confirmada visualmente pelo utilizador' : 'pré-visualização utilizada sem confirmação de posição') : 'não utilizada'}</span>
           </div>
           <h2 className="section-heading">1. Reconhecimento de símbolos</h2>
           <div className="result-grid">
