@@ -39,7 +39,7 @@ function makeQuestions(): { direction: Direction; level: number }[] {
 function App() {
   const [screen, setScreen] = useState<Screen>('home')
   const [cardWidth, setCardWidth] = useState(320)
-  const [calibrated, setCalibrated] = useState(true)
+  const [calibrated, setCalibrated] = useState(false)
   const [eyeIndex, setEyeIndex] = useState(0)
   const [questionIndex, setQuestionIndex] = useState(0)
   const [patternIndex, setPatternIndex] = useState(0)
@@ -59,7 +59,10 @@ function App() {
       eye,
       correct: eyeAnswers.filter((answer) => answer.correct).length,
       total: eyeAnswers.length,
-      smallestPresented: eyeAnswers.length ? Math.min(...eyeAnswers.map((answer) => answer.level)) : null,
+      levelBreakdown: levels.map((level) => {
+        const response = eyeAnswers.find((answer) => answer.level === level)
+        return { level, answered: Boolean(response), correct: response?.correct ?? false }
+      }),
     }
   }), [answers])
 
@@ -357,7 +360,12 @@ function App() {
               <article className="result-card" key={item.eye}>
                 <span className="result-label">{eyeNames[item.eye]}</span>
                 <strong>{item.correct} <small>{item.correct === 1 ? 'acerto' : 'acertos'}</small></strong>
-                <span className="result-description">em {item.total} símbolos apresentados. Menor nível de estímulo apresentado: {item.smallestPresented === null ? '—' : `${Math.round(item.smallestPresented * 100)}%`} do tamanho máximo usado.</span>
+                <span className="result-description">em {item.total} símbolos apresentados. Respostas por dimensão relativa do estímulo:</span>
+                <div className="level-breakdown">
+                  {item.levelBreakdown.map((level) => (
+                    <span key={level.level}><b>{Math.round(level.level * 100)}%</b><i className={level.answered && level.correct ? 'level-mark correct' : 'level-mark'} />{level.answered && level.correct ? 'Identificado' : 'Não identificado'}</span>
+                  ))}
+                </div>
               </article>
             ))}
           </div>
