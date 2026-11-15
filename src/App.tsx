@@ -103,7 +103,7 @@ function App() {
     setScreen('acuity')
   }
 
-  function finishAcuity(nextAnswers: Answer[]) {
+  function finishAcuity() {
     setEyeIndex(0)
     setPatternIndex(0)
     setScreen('astigmatism')
@@ -127,7 +127,7 @@ function App() {
       setQuestionIndex(0)
       setNotice('Agora vamos observar o outro olho. Tape o olho direito sem pressionar.')
     } else {
-      finishAcuity(nextAnswers)
+      finishAcuity()
     }
   }
 
@@ -139,7 +139,7 @@ function App() {
     else if (eyeIndex === 0) {
       setEyeIndex(1); setQuestionIndex(0)
       setNotice('Agora tape o olho direito e observe com o esquerdo.')
-    } else finishAcuity(nextAnswers)
+    } else finishAcuity()
   }
 
   function answerPattern(perception: PatternAnswer['perception']) {
@@ -159,7 +159,7 @@ function App() {
     }
   }
 
-  function updateSymptom(key: keyof Symptoms, value: Symptoms[keyof Symptoms]) {
+  function updateSymptom<K extends keyof Symptoms>(key: K, value: Symptoms[K]) {
     setSymptoms((previous) => ({ ...previous, [key]: value }))
   }
 
