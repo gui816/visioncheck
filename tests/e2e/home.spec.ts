@@ -33,5 +33,7 @@ test('user can complete both guided exercises and view a non-clinical summary', 
 
   await expect(page.getByRole('heading', { name: /A sua sessão está concluída/i })).toBeVisible()
   await expect(page.getByText(/não representa uma medição clínica/i)).toBeVisible()
+  await expect(page.getByText(/A contagem de acertos não equivale a uma escala clínica como 6\/6/i)).toBeVisible()
+  await expect(page.getByText(/acertos/i).first()).toBeVisible()
   await expect(page.getByRole('button', { name: /Repetir sessão/i })).toBeVisible()
 })
