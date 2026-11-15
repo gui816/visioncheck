@@ -40,3 +40,9 @@
 .report-limitations li{margin:5px 0}
 @media(max-width:520px){.symptom-options{display:grid;grid-template-columns:1fr}.symptom-options .choice-button{width:100%}.parallel-lines{width:220px;height:220px}}
 @media print{.report-meta,.interpretation-card,.report-limitations,.result-observations,.result-card{break-inside:avoid}.results-panel{max-width:100%}.report-limitations{border-color:#bbb}}
+
+.level-breakdown{display:grid;gap:5px;margin-top:7px}
+.level-breakdown>span{display:grid;grid-template-columns:42px 10px 1fr;align-items:center;gap:7px;font-size:10px;color:#748198}
+.level-breakdown b{font-size:10px;color:#4d5d78;font-variant-numeric:tabular-nums}
+.level-mark{width:8px;height:8px;border-radius:50%;background:#d6a15c}
+.level-mark.correct{background:#55a47d}
