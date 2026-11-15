@@ -81,3 +81,28 @@ test('Tumbling E keeps a 5 by 5 vector geometry across stimulus sizes', async ({
   await expect(optotype.locator('rect')).toHaveCount(4)
   await expect(optotype).toHaveCSS('fill', 'rgb(16, 16, 16)')
 })
+
+
+test('each optotype size uses a balanced set of four orientations', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Começar avaliação/i }).click()
+  await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
+  await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
+
+  const observed = new Map<string, string[]>()
+  for (let answer = 0; answer < 60; answer += 1) {
+    const symbol = page.getByRole('img', { name: 'Símbolo E em orientação aleatória' })
+    const width = await symbol.evaluate((element) => (element as SVGSVGElement).style.width)
+    const rotation = await symbol.evaluate((element) => (element as SVGSVGElement).style.transform)
+    observed.set(width, [...(observed.get(width) ?? []), rotation])
+    await page.getByRole('button', { name: 'Direita' }).click()
+  }
+
+  expect(observed.size).toBe(6)
+  for (const rotations of observed.values()) {
+    const counts = [...new Set(rotations)].map((rotation) => rotations.filter((value) => value === rotation).length)
+    expect(rotations).toHaveLength(5)
+    expect(Math.max(...counts) - Math.min(...counts)).toBeLessThanOrEqual(1)
+    expect(counts.length).toBe(4)
+  }
+})
