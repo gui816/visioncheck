@@ -286,7 +286,7 @@ function App() {
 
       {screen === 'calibration' && (
         <section className="flow-panel">
-          <button className="back-link" onClick={() => setScreen('intro')}><ArrowLeft size={15} /> Voltar</button>
+          <button className="back-link" onClick={() => { disableCamera(); setScreen('intro') }}><ArrowLeft size={15} /> Voltar</button>
           <div className="eyebrow"><Smartphone size={15} /> PASSO 1 · CALIBRAÇÃO</div>
           <h1>Ajuste a escala do ecrã.</h1>
           <p className="panel-copy">Coloque um cartão bancário real sobre o retângulo. Ajuste o controlo até a largura do retângulo coincidir com a largura do cartão (85,6 mm).</p>
