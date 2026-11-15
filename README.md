@@ -7,7 +7,7 @@ Aplicação web de auto-observação visual educativa, com exercícios guiados p
 - Lista de verificação para distância de observação de 40 cm e brilho do ecrã.
 - Pré-visualização opcional da câmara frontal para ajudar o utilizador a centrar o rosto e alinhar os olhos; não executa reconhecimento facial nem mede distância.
 - O relatório regista quais as condições de preparação confirmadas pelo utilizador.
-- Reconhecimento do optótipo E vetorial numa grelha geométrica 5 × 5, com oclusão alternada de cada olho, seis tamanhos em passos logarítmicos de 0,2 e cinco tentativas por tamanho em ordem aleatória.
+- Reconhecimento do optótipo E vetorial numa grelha geométrica 5 × 5, com oclusão alternada de cada olho, seis tamanhos em passos logarítmicos de 0,2 e cinco tentativas por tamanho em ordem aleatória, com as quatro orientações equilibradas em cada dimensão.
 - Registo separado de respostas corretas, incorretas e símbolos não identificados.
 - Indicador descritivo de consistência por dimensão (4/5 ou 5/5), sem conversão em acuidade clínica. A escala de estímulo é inspirada em progressões logMAR, mas não constitui uma escala clínica logMAR.
 - Observação subjetiva de padrões de linhas em quatro orientações, por olho.

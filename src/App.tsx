@@ -22,7 +22,6 @@ const eyeNames: Record<EyeSide, string> = { right: 'Olho direito', left: 'Olho e
 const directions: Direction[] = ['right', 'down', 'left', 'up']
 const directionLabels: Record<Direction, string> = { right: 'Direita', down: 'Baixo', left: 'Esquerda', up: 'Cima' }
 const levels = [1, 0.8, 0.6, 0.4, 0.2, 0]
-const repetitionsPerLevel = 5
 const arrowSymbols: Record<Direction, string> = { right: '→', down: '↓', left: '←', up: '↑' }
 const patternAngles = [0, 45, 90, 135]
 const initialSymptoms: Symptoms = {
@@ -30,16 +29,23 @@ const initialSymptoms: Symptoms = {
   nearRight: 'clear', nearLeft: 'clear', strain: 'never',
 }
 
-function makeQuestions(): { direction: Direction; level: number }[] {
-  const questions = levels.flatMap((level) => Array.from({ length: repetitionsPerLevel }, () => ({
-    level,
-    direction: directions[Math.floor(Math.random() * directions.length)],
-  })))
-  for (let index = questions.length - 1; index > 0; index -= 1) {
+function shuffle<T>(items: T[]): T[] {
+  const shuffled = [...items]
+  for (let index = shuffled.length - 1; index > 0; index -= 1) {
     const swapIndex = Math.floor(Math.random() * (index + 1))
-    ;[questions[index], questions[swapIndex]] = [questions[swapIndex], questions[index]]
+    ;[shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]]
   }
-  return questions
+  return shuffled
+}
+
+function makeQuestions(): { direction: Direction; level: number }[] {
+  // Each size gets a balanced set of orientations: every direction appears
+  // once, with one randomly selected direction repeated for the fifth trial.
+  const questions = levels.flatMap((level) => {
+    const repeatedDirection = directions[Math.floor(Math.random() * directions.length)]
+    return shuffle([...directions, repeatedDirection]).map((direction) => ({ level, direction }))
+  })
+  return shuffle(questions)
 }
 
 function App() {
