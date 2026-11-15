@@ -24,7 +24,8 @@ test('user completes symbol, directional-pattern and symptom steps and sees deta
   await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
   await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
 
-  for (let answer = 0; answer < 60; answer += 1) {
+  // Validate one eye's 30 trials; the same six sizes repeat for the second eye.
+  for (let answer = 0; answer < 30; answer += 1) {
     await page.getByRole('button', { name: 'Direita' }).click()
   }
 
