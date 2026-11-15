@@ -24,6 +24,7 @@
     "@types/react-dom": "latest",
     "typescript": "latest",
     "vitest": "latest",
-    "jsdom": "latest"
+    "jsdom": "latest",
+    "@types/node": "^22.19.0"
   }
 }
