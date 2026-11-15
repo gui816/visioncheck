@@ -14,7 +14,8 @@ test('user can prepare the device and begin the guided exercises', async ({ page
   await expect(page.getByRole('heading', { name: /Ajuste a escala do ecrã/i })).toBeVisible()
   await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
   await expect(page.getByRole('heading', { name: /Olho direito/i })).toBeVisible()
-  await expect(page.getByLabel('Símbolo E em orientação aleatória')).toBeVisible()
+  await expect(page.getByRole('img', { name: 'Símbolo E em orientação aleatória' })).toBeVisible()
+  await expect(page.locator('.tumbling-e rect')).toHaveCount(4)
 })
 
 test('user completes symbol, directional-pattern and symptom steps and sees detailed report', async ({ page }) => {
@@ -67,4 +68,16 @@ test('setup records distance, brightness and optional camera guidance in the rep
   await expect(page.getByText(/não deteta o rosto nem mede a distância/i)).toBeVisible()
   await expect(page.getByRole('button', { name: /Ativar pré-visualização da câmara/i })).toBeVisible()
   await expect(page.getByRole('button', { name: /Iniciar exercícios/i })).toBeVisible()
+})
+
+
+test('Tumbling E keeps a 5 by 5 vector geometry across stimulus sizes', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Começar avaliação/i }).click()
+  await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
+  await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
+  const optotype = page.getByRole('img', { name: 'Símbolo E em orientação aleatória' })
+  await expect(optotype).toHaveAttribute('viewBox', '0 0 5 5')
+  await expect(optotype.locator('rect')).toHaveCount(4)
+  await expect(optotype).toHaveCSS('fill', 'rgb(16, 16, 16)')
 })
