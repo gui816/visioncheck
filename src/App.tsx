@@ -21,7 +21,8 @@ type Symptoms = {
 const eyeNames: Record<EyeSide, string> = { right: 'Olho direito', left: 'Olho esquerdo' }
 const directions: Direction[] = ['right', 'down', 'left', 'up']
 const directionLabels: Record<Direction, string> = { right: 'Direita', down: 'Baixo', left: 'Esquerda', up: 'Cima' }
-const levels = [1, 0.8, 0.6, 0.4, 0.2, 0]\nconst repetitionsPerLevel = 5
+const levels = [1, 0.8, 0.6, 0.4, 0.2, 0]
+const repetitionsPerLevel = 5
 const arrowSymbols: Record<Direction, string> = { right: '→', down: '↓', left: '←', up: '↑' }
 const patternAngles = [0, 45, 90, 135]
 const initialSymptoms: Symptoms = {
