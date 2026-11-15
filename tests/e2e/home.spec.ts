@@ -56,3 +56,15 @@ test('symptom answers are reflected in the educational interpretation', async ({
   await page.getByRole('button', { name: /Ver relatório detalhado/i }).click()
   await expect(page.getByText(/referiu episódios de desfocagem/i)).toBeVisible()
 })
+
+
+test('setup records distance, brightness and optional camera guidance in the report', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /Começar avaliação/i }).click()
+  await page.getByRole('button', { name: /Preparar dispositivo/i }).click()
+  await page.getByRole('button', { name: /Iniciar exercícios/i }).click()
+  await page.getByRole('button', { name: /Medi 40 cm/i }).click()
+  await page.getByRole('button', { name: /Ajustei o brilho/i }).click()
+  await expect(page.getByText(/não deteta o rosto nem mede a distância/i)).toBeVisible()
+  await expect(page.getByRole('button', { name: /Ativar pré-visualização da câmara/i })).toBeVisible()
+})
