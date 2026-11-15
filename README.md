@@ -4,7 +4,9 @@ Aplicação web de auto-observação visual educativa, com exercícios guiados p
 
 ## Funcionalidades atuais
 - Calibração manual opcional com cartão de 85,6 mm.
-- Reconhecimento de símbolos com oclusão alternada de cada olho.
+- Reconhecimento de símbolos com oclusão alternada de cada olho, seis dimensões relativas e cinco tentativas por dimensão em ordem aleatória.
+- Registo separado de respostas corretas, incorretas e símbolos não identificados.
+- Indicador descritivo de consistência por dimensão (4/5 ou 5/5), sem conversão em acuidade clínica.
 - Observação subjetiva de padrões de linhas em quatro orientações, por olho.
 - Questionário de sintomas visuais ao longe, ao perto e desconforto ocular.
 - Relatório por olho com respostas, padrões observados, sintomas referidos, contexto de calibração e limitações.
@@ -14,7 +16,7 @@ Aplicação web de auto-observação visual educativa, com exercícios guiados p
 ## Limitações importantes
 Esta versão não executa uma refração clínica, não mede acuidade visual normalizada, não identifica nem diagnostica miopia ou astigmatismo e não calcula valores de esfera (SPH), cilindro (CYL), eixo (AXIS) ou receita de óculos. Os exercícios e sintomas são apenas sinais educativos que podem ajudar o utilizador a decidir se deve procurar uma avaliação profissional.
 
-A medição de graduação exige um protocolo refrativo validado e comparação com equipamento e avaliação profissional. A câmara frontal, estimativa de distância e cálculos refrativos não estão implementados nesta versão.
+As repetições reduzem a influência de uma resposta isolada ou do acaso, mas não transformam o exercício num teste clínico validado. A medição de graduação exige um protocolo refrativo validado e comparação com equipamento e avaliação profissional. A câmara frontal, estimativa de distância e cálculos refrativos não estão implementados nesta versão.
 
 ## Requisitos
 - Node.js 22+
